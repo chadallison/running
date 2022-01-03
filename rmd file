@@ -1,0 +1,244 @@
+---
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = F, warning = F, message = F}
+library(tidyverse)
+# library(readxl)
+library(googlesheets4)
+library(magrittr)
+# library(ggthemes)
+library(DT)
+library(ggridges)
+library(ggcorrplot)
+library(plotly)
+library(lubridate)
+
+knitr::opts_chunk$set(message = F, warning = F, fig.align = "center", echo = F)
+options(scipen = 999)
+theme_set(theme_minimal())
+
+gs4_auth("chadallison1999@gmail.com")
+
+df = read_sheet("https://docs.google.com/spreadsheets/d/1oBUbxvufTpkGjnDgfadvUeU9KMo7o71Iu0ykJwERzMc/edit?usp=sharing") |>
+  mutate(md = paste(as.character(month), as.character(day), sep = "-"),
+         date = paste(md, as.character(year), sep = "-"),
+         date = mdy(date),
+         pace = round(pace, 2),
+         time = round(time, 2)) |>
+  select(-c(month, day, year, md, run)) |>
+  select(7, 1:6) |>
+  set_colnames(c("Date", "Distance", "Pace", "Time", "Calories", "Elevation", "Shoe"))
+```
+
+# Nike Run Club Data: Last Updated `r format(max(df$Date), "%B %d, %Y")`
+
+### Why do I run?
+
+This is a very difficult question to answer. It has run through my mind many times before, but I've never taken the time to articulate an attempt at an answer. I believe the true answer to the question is one of those that cannot be truly articulated or expressed, but I can still try my best to answer it as well as I can.
+
+This question was also recently posed to me indirectly via the *Six Minute Mile* podcast in an episode with Jason Jabaut, the Chief Operating Officer of Fleet Feet, where I interned in Summer 2021 ([link to episode](https://www.sixminutemile.com/listen/episode/1c9b0750/jason-jabaut-chief-operating-officer-of-fleet-feet)). While I only got to meet Jason a few times and didn't necessarily work with him all that much, he was very kind and helpful to me throughout the entire internship, spanning from the interview process to my final presentation. Jason is someone I look up to despite not knowing all that well, and I thought it appropriate to take his recommendation and try to write up what running means to me.
+
+Before March 2020, the only time I ever ran was as punishment at baseball practice. I was overweight (obese per BMI) and couldn't begin to understand how people enjoyed running in the slightest. But right as COVID rolled around, I got tired of being overweight and unhappy with my body and decided it was time to make a change. So reluctantly, I started running. I didn't enjoy it that much, and I certainly wasn't very good at it. I don't think I could continuously run a mile without stopping, and if I did the pace had to be quite slow. It took a few weeks, but I finally started to see results on the scale and I loved how that made me feel, so I stuck with it. When COVID quarantine hit, it honestly really helped me because I had a ton of time on my hands and no excuse to not go out and do something with that time. Fortunately, I lived close to a neighborhood that was pretty good for running and would go over there and run most days. Over a month or two, I worked my way up to running four or five miles on my runs, although a lot of that was walking. Still, I was devoting roughly an hour of my time most days to running and it helped me physically and mentally. I can't remember the exact timetable, but after a few months of running, I finally got under 200 lbs. for the first time in years, and certainly for the first time since I had stopped getting taller. It made me feel amazing, and I had a whole new level of self-confidence.
+
+I continued to run over the following months, slowly lowering my pace and decreasing the amount of walking I’d do. It was a good opportunity for me to listen to a lot of new music, which was a benefit I hadn’t thought of before. Over the summer of 2020, my only responsibilities were a couple of summer classes, so many days I would run along with walking 9 or 18 holes at the golf course. I fell in love with being on my feet and the pursuit of getting into better shape.
+
+When August rolled around, I transferred my commitment to running pretty well from living at home to living at school. It took me a while to find routes I enjoyed running consistently, but I stuck to it and ended up running most days, even during the school semester. By November, I had gotten really into pushing myself on my runs and decided I wanted to do a half-marathon. And foolishly, I didn’t do nearly enough training for it; I can’t recall my exact training timeline, but it was far too short and ended up biting me in the tail. I did run a half-marathon on Election Day 2020, but a week or so later started to experience some sharp knee pain in my left knee. I took some time off and pain continued, so I ended up getting an MRI and it was determined I just had runner’s knee. So from mid-November to early March, there was no running, with exception of a few times I thought I could do it and ended up regretting it. The physical therapy was mostly stretching, which I did a lot of along with some stationary biking and cardio workouts that didn’t irritate my knee. I also did a great deal of swimming while I was living on campus. By the time March rolled around, I was finally able to ease back into it. I was very slow at first, but I was just happy to be able to run again.
+
+Since March, I’ve worked hard to improve myself as a runner and further improve my physical (and mental) health. I’ve made it a priority to do plenty of stretching post-run as well so I can improve my longevity. My speed and endurance have improved greatly and I am definitely in the best shape of my life, physically and mentally. I have been able to lower my mile time to 6:04 (working hard to get under 6) and my 5K time to 22:08. I have introduced more variation in my daily runs, with some runs being more endurance-based and some being more strength-based (hill sprints, 400m sprints). I also try to do 10-15 minutes of yoga or pilates in the evenings along with roughly 1,250 yards of swimming when I get the chance - I am usually able to do this at least three times each week. And as I write this, I’m currently on a 69-day running streak (nice), my longest ever by far.
+
+All this improvement has changed every aspect of my life, and I view myself completely differently now than I did before I took up running. Along with a higher level of love and appreciation for myself, I have learned to appreciate everything else in life more and have a much higher energy level and motivation level each day. I feel like a completely new person, and my life has been completely revitalized by discovering my love for running. Running is something I am so thankful to be able to do every day, and it is something I hope to do for the rest of my life.
+
+```{r echo = F}
+cor(df |> select(-c(Date, Shoe))) |>
+  ggcorrplot(hc.order = T, outline.color = "black",
+             type = "lower", lab = T,
+             colors = c("springgreen3", "white", "plum"))
+```
+
+```{r creating_streak_variable}
+df$Streak = 1
+
+for (i in 2:nrow(df)) {
+  if (df$Date[i] == df$Date[i - 1] + 1 | df$Date[i] == df$Date[i - 1]) {
+    df$Streak[i] = df$Streak[i - 1] + 1
+  } else {
+    df$Streak[i] = 1
+  }
+}
+```
+
+```{r}
+fig = df |>
+  filter(year(Date) == 2021,
+         month(Date) >= 3) |>
+  mutate(month = as.factor(month(Date))) |>
+  ggplot(aes(Pace, month)) +
+  geom_density_ridges(aes(fill = month),
+                      quantile_lines = T,
+                      quantiles = 2) +
+  theme_minimal() +
+  labs(x = "Pace (min/mi)",
+       y = "Month",
+       title = "Distribution of monthly pace in 2021") +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.position = "none")
+
+suppressMessages(print(fig))
+```
+
+```{r}
+order = df |>
+  group_by(month(Date), year(Date)) |>
+  summarise(dist = sum(Distance),
+            .groups = "drop") |>
+  set_colnames(c("month", "year", "dist")) |>
+  arrange(year, month) |>
+  mutate(my = paste(month, year, sep = "-")) |>
+  pull(my)
+
+df |>
+  mutate(MonthYr = paste(month(Date), year(Date), sep = "-"),
+         MonthYr = factor(MonthYr, levels = order)) |>
+  group_by(MonthYr) |>
+  summarise(dist = sum(Distance),
+            n = n()) |>
+  ggplot(aes(MonthYr, dist)) +
+  geom_col(fill = "thistle3") +
+  geom_text(aes(label = n), size = 3, vjust = -0.5) +
+  theme_minimal() +
+  labs(x = NULL, y = "Distance (mi)", title = "Monthly distance trends") +
+  theme(axis.text.x = element_text(angle = 90),
+        plot.title = element_text(hjust = 0.5),
+        axis.text.y = element_blank())
+```
+
+```{r}
+shoe.levels = c("PureBoost", "Ghost 13", "Clifton 8", "Ghost 14")
+
+df |>
+  mutate(isSub830 = ifelse(Pace < 8.5, 1, 0),
+         Shoe = factor(Shoe, levels = shoe.levels)) |>
+  group_by(Shoe) |>
+  summarise("Sub 8:30 Ratio" = round(sum(isSub830) / n(), 2)) |>
+  mutate(ranks = c(3, 2, 4, 1)) |>
+  arrange(ranks) |>
+  select(-ranks) |>
+  ggplot(aes(Shoe, `Sub 8:30 Ratio`)) +
+  geom_col(fill = "thistle3") +
+  geom_text(aes(label = `Sub 8:30 Ratio`), vjust = -0.5, size = 3) +
+  theme_minimal() +
+  labs(x = NULL, y = NULL,
+       title = "Sub-8:30 pace ratio by shoe") +
+  theme(axis.text.y = element_blank(),
+        plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+df |>
+  mutate(Shoe = factor(Shoe, levels = shoe.levels)) |>
+  group_by(Shoe) |>
+  summarise(dist = sum(Distance),
+            pace = round(sum(Time) / sum(Distance), 2))
+```
+
+```{r}
+fig = df |>
+  filter(year(Date) == 2021) |>
+  mutate(month = as.factor(month(Date)),
+         day = as.factor(day(Date))) |>
+  ggplot(aes(day, month)) +
+  geom_point(shape = "square", size = 6.5, col = "seagreen4") +
+  labs(x = "Day",
+       y = "Month",
+       title = "2021 Summary") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+month.lines = seq(from = 0.5, to = 12.5, by = 1)
+day.lines = seq(from = 0.5, to = 31.5, by = 1)
+
+for (i in 1:length(month.lines)) {
+
+  fig = fig +
+    geom_hline(yintercept = month.lines[i],
+               linetype = "dotted")
+
+}
+
+for (i in 1:length(day.lines)) {
+
+  fig = fig +
+    geom_vline(xintercept = day.lines[i],
+               linetype = "dotted")
+
+}
+
+fig
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
