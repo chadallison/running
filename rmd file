@@ -47,20 +47,20 @@ date = paste(day, month, year)
 
 # Running Data: Last Updated `r date`
 
-___
+------------------------------------------------------------------------
 
 ### Total Distance: `r paste(df |> summarise(dist = sum(Distance)) |> pull(dist), "miles")`
 
-___
+------------------------------------------------------------------------
 
 ### Contents
 
-- [All Runs]
-- [Shoe Summaries]
-- [Other Plots]
-- [Why do I run?]
+-   [All Runs]
+-   [Shoe Summaries]
+-   [Other Plots]
+-   [Why do I run? (Last updated 24 April 2022)]
 
-___
+------------------------------------------------------------------------
 
 ### All Runs
 
@@ -68,7 +68,7 @@ ___
 datatable(df |> arrange(desc(Date)))
 ```
 
-___
+------------------------------------------------------------------------
 
 ### Shoe Summaries
 
@@ -82,7 +82,7 @@ datatable(df |>
             `Average Pace` = round(sum(Time) / sum(Distance), 2)))
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 df |>
@@ -103,7 +103,7 @@ df |>
         plot.title = element_text(hjust = 0.5))
 ```
 
-___
+------------------------------------------------------------------------
 
 ### Other Plots
 
@@ -132,7 +132,7 @@ df |>
         plot.title = element_text(hjust = 0.5))
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 df |>
@@ -141,8 +141,10 @@ df |>
          month = case_when(month == 1 ~ "January",
                            month == 2 ~ "February",
                            month == 3 ~ "March",
-                           month == 4 ~ "April"),
-         month = factor(month, levels = c("January", "February", "March", "April"))) |>
+                           month == 4 ~ "April",
+                           month == 5 ~ "May",
+                           month == 6 ~ "June"),
+         month = factor(month, levels = c("January", "February", "March", "April", "May", "June"))) |>
   ggplot(aes(day(Date), Distance)) +
   geom_col(fill = "palegreen3", width = 0.5) +
   facet_wrap(~ month, strip.position = "bottom") +
@@ -151,36 +153,35 @@ df |>
         plot.title = element_text(hjust = 0.5))
 ```
 
-___
+------------------------------------------------------------------------
 
-### Why do I run?
+### Why do I run? (Last updated 24 April 2022)
 
-I used to hate running, and couldn’t imagine how or why anyone would ever enjoy it. The only experience I had with running was as punishment at baseball or basketball practices, and I dreaded the thought of it. There had been a few times in the past when I would tell myself I wanted to start running to get in shape, but I would only stay true to this commitment for a few days at most. I don’t know what changed this time around, but I had reached a point where I was tired of being out of shape and feeling uncomfortable in my own body. I had already made a huge step of progress in quitting soda and wanted to challenge myself physically as well.
+I used to hate running, and couldn't imagine how or why anyone would ever enjoy it. The only experience I had with running was as punishment at baseball or basketball practices, and I dreaded the thought of it. There had been a few times in the past when I would tell myself I wanted to start running to get in shape, but I would only stay true to this commitment for a few days at most. I don't know what changed this time around, but I had reached a point where I was tired of being out of shape and feeling uncomfortable in my own body. I had already made a huge step of progress in quitting soda and wanted to challenge myself physically as well.
 
-I started my commitment to running sometime in late February of 2020 when I would run from Morrison Dorm to Merritt’s Grill in Chapel Hill, which was about 1.2 miles one way and consisted of a relatively steep and lengthy hill near Merritt’s. I ran extremely slow, and did a great deal of walking – I can recall feeling extremely accomplished if I made it all the way to Merritt’s without walking any. I also went and ran a little bit at Morgan Creek Trail in Chapel Hill, which was about 0.8 miles one way out to Merritt’s Pasture where I would walk about 0.75 miles before coming back to my car; this was a more scenic run than my typical “dorm run” which I did not do as often since I had to drive there and access to my car was limited while living on campus.
+I started my commitment to running sometime in late February of 2020 when I would run from Morrison Dorm to Merritt's Grill in Chapel Hill, which was about 1.2 miles one way and consisted of a relatively steep and lengthy hill near Merritt's. I ran extremely slow, and did a great deal of walking -- I can recall feeling extremely accomplished if I made it all the way to Merritt's without walking any. I also went and ran a little bit at Morgan Creek Trail in Chapel Hill, which was about 0.8 miles one way out to Merritt's Pasture where I would walk about 0.75 miles before coming back to my car; this was a more scenic run than my typical "dorm run" which I did not do as often since I had to drive there and access to my car was limited while living on campus.
 
-I am very privileged to be able to say this, but being sent home from campus when COVID quarantine came around was one of the best things that ever happened to me. While living at home and doing classes remotely, I had a lot of free time throughout the day and easy access to the neighborhood just across the street which was a great spot for running. I continued running slowly and walking a good deal, but I was slowly getting faster and building endurance. On top of running most days, I ended up playing a lot of golf as well and made an emphasis on walking and carrying my bag while I played instead of taking a cart. I also enjoyed treating myself by driving to get boba tea at either Boba Baba or Milklab in Cary after my run many days – definitely not the healthiest choice, but it was a nice way to reward myself for getting out and exercising. For the first time in a long time, I started to feel more confident about my body and found myself to be far more energetic and motivated throughout the day.
+I am very privileged to be able to say this, but being sent home from campus when COVID quarantine came around was one of the best things that ever happened to me. While living at home and doing classes remotely, I had a lot of free time throughout the day and easy access to the neighborhood just across the street which was a great spot for running. I continued running slowly and walking a good deal, but I was slowly getting faster and building endurance. On top of running most days, I ended up playing a lot of golf as well and made an emphasis on walking and carrying my bag while I played instead of taking a cart. I also enjoyed treating myself by driving to get boba tea at either Boba Baba or Milklab in Cary after my run many days -- definitely not the healthiest choice, but it was a nice way to reward myself for getting out and exercising. For the first time in a long time, I started to feel more confident about my body and found myself to be far more energetic and motivated throughout the day.
 
-By the time August 2020 came around and it was time to move back to Chapel Hill, I had built up good momentum with running which I was able to keep going while at school. I created a routine that I followed extremely closely most days: I’d wake up, have my coffee and Pop Tarts – which I have since given up – for breakfast, go run, come home and shower, go get boba tea from Cha House (where I have spent way too much money) and come home to do classes and schoolwork. I had never been much of a creature of habit before, so this was a pretty big change for me which I ended up finding valuable for me. As my mileage increased and endurance got better over the course of that semester, I wanted to do something about it, so I made the stupid decision to attempt a half marathon without sufficient training.
+By the time August 2020 came around and it was time to move back to Chapel Hill, I had built up good momentum with running which I was able to keep going while at school. I created a routine that I followed extremely closely most days: I'd wake up, have my coffee and Pop Tarts -- which I have since given up -- for breakfast, go run, come home and shower, go get boba tea from Cha House (where I have spent way too much money) and come home to do classes and schoolwork. I had never been much of a creature of habit before, so this was a pretty big change for me which I ended up finding valuable for me. As my mileage increased and endurance got better over the course of that semester, I wanted to do something about it, so I made the stupid decision to attempt a half marathon without sufficient training.
 
-On Election Day 2020, I did run/walk 13.1 miles. It may not have been an impressive time, but I still felt (and still do feel) very accomplished because of it; it was a huge milestone for me to go that distance having struggled to complete something like one-tenth of that distance just nine months or so prior. But unfortunately, as a result of my insufficient training, I developed sharp knee pains about a week or so following my little self-guided half marathon. I took some time off, but the pain remained and after a process of seeing an orthopedic doctor and getting an MRI, it was determined I had runner’s knee and needed to do a few months of physical therapy. This was ultimately good for me, but I struggled going four months without being able to run – I quickly became discouraged and realized how important running had become for me. To fill the hole not being able to run left, I took up some calisthenics workouts in the mornings to try to build functional strength and flexibility and went swimming most evenings to keep up strength and endurance. Swimming was a nice change of pace, and I came to enjoy it – not as much as I enjoyed running, but I became fairly invested in it and made a lot of improvement in it.
+On Election Day 2020, I did run/walk 13.1 miles. It may not have been an impressive time, but I still felt (and still do feel) very accomplished because of it; it was a huge milestone for me to go that distance having struggled to complete something like one-tenth of that distance just nine months or so prior. But unfortunately, as a result of my insufficient training, I developed sharp knee pains about a week or so following my little self-guided half marathon. I took some time off, but the pain remained and after a process of seeing an orthopedic doctor and getting an MRI, it was determined I had runner's knee and needed to do a few months of physical therapy. This was ultimately good for me, but I struggled going four months without being able to run -- I quickly became discouraged and realized how important running had become for me. To fill the hole not being able to run left, I took up some calisthenics workouts in the mornings to try to build functional strength and flexibility and went swimming most evenings to keep up strength and endurance. Swimming was a nice change of pace, and I came to enjoy it -- not as much as I enjoyed running, but I became fairly invested in it and made a lot of improvement in it.
 
-By March 2021, I was more or less recovered from my injury and was able to start running again. I eased into it, only allowing myself to run every other day at the start of my “return” and going to the gym on the other days to keep up my strength. I continued swimming most evenings, which was good for my overall endurance and health and gave me something to do in the evenings. I stayed true to a similar routine I followed in the Fall 2020 semester, running in the mornings, attending to schoolwork during the midday, and swimming in the evenings. I kept myself very busy, and I know it was good for me both mentally and physically.
+By March 2021, I was more or less recovered from my injury and was able to start running again. I eased into it, only allowing myself to run every other day at the start of my "return" and going to the gym on the other days to keep up my strength. I continued swimming most evenings, which was good for my overall endurance and health and gave me something to do in the evenings. I stayed true to a similar routine I followed in the Fall 2020 semester, running in the mornings, attending to schoolwork during the midday, and swimming in the evenings. I kept myself very busy, and I know it was good for me both mentally and physically.
 
-During Summer 2021, I interned with Fleet Feet which was an extremely fulfilling experience; it was so enjoyable working in an area where I could combine my love for data and analytics with my newfound passion for running. I continued my routine of running in the mornings and running the rest of the day until I got off of work, and then I would go swim. My running improved greatly, and I became a decent-ish swimmer as well, with a heavy emphasis on the “ish.” My greatest swimming accomplishment was swimming a mile without stopping, which for many swimmers might not be too impressive a feat (especially considering the speed at which I did it) but it was another example of something that was fulfilling for me because only a half-year prior I know I could not even come close to doing it. Summer 2021 was an amazing few months with lots of memories I will not soon forget. One of my favorite highlights would have to be running a couple of miles on the beaches of Malibu, California when I went to visit my friend who was working in Los Angeles for the summer. Cookout is better than In-N-Out, by the way.
+During Summer 2021, I interned with Fleet Feet which was an extremely fulfilling experience; it was so enjoyable working in an area where I could combine my love for data and analytics with my newfound passion for running. I continued my routine of running in the mornings and running the rest of the day until I got off of work, and then I would go swim. My running improved greatly, and I became a decent-ish swimmer as well, with a heavy emphasis on the "ish." My greatest swimming accomplishment was swimming a mile without stopping, which for many swimmers might not be too impressive a feat (especially considering the speed at which I did it) but it was another example of something that was fulfilling for me because only a half-year prior I know I could not even come close to doing it. Summer 2021 was an amazing few months with lots of memories I will not soon forget. One of my favorite highlights would have to be running a couple of miles on the beaches of Malibu, California when I went to visit my friend who was working in Los Angeles for the summer. Cookout is better than In-N-Out, by the way.
 
 The final few months of 2021 were great, and a made a few running milestones along the way: I finally hit 1,000 cumulative miles of running since I first began tracking my runs in March 2020, I set my 5K PR of 22:07 during the Carolina 4 The Kids 5K race, I introduced more variety into my runs (longer pace runs, interval-based training, hill sprints, etc.), and finally got my mile time under six minutes (5:56). I ran a self-guided 10K race at one point as well, where my pace was much quicker than I had expected going into it. I stopped swimming sometime earlier in the Fall 2021 semester, but I did significantly increase my weekly running mileage and consistently did yoga/pilates in the evenings, as well. And in December of 2021, I signed up for the Tar Heel 10 Miler (which I would run in April 2022) with the intention of running the entire race and doing it at a somewhat-competitive pace.
 
-All of 2022 leading up to the 10 Miler race consisted of training: longer distance runs than I had ever done before, and an even stronger emphasis on pushing myself to get faster so that I could keep up a good pace for ten miles. I knew from the start it would be a huge challenge to get myself to run the race at an 8:00 min/mi pace, so that was what I worked toward. There were many days when I didn’t feel like going out and running hill sprints or going to run 8 miles (especially since this was my first experience running in the cold with my injury in late 2020), but I stayed true to my training and it certainly paid off. The 2022 Tar Heel 10 Miler was one of the best experiences I have had in college, and I truly consider it maybe my proudest accomplishment in my life. I did have a minor setback in the two weeks before the race, where I unluckily developed a bacterial skin infection in my left ankle which made it painful to put weight on my foot and caused me to miss the final ten-ish days of my training. I was pretty concerned that this would jeopardize all the training I had done to that point. It finally cleared up enough by race day, but I happened to wake up on the morning of the race with some left Achilles pain that I had never experienced before. I wasn’t going to let some pain keep me from pursuing what I had been working toward, so I took some painkillers and got ready to run.
+All of 2022 leading up to the 10 Miler race consisted of training: longer distance runs than I had ever done before, and an even stronger emphasis on pushing myself to get faster so that I could keep up a good pace for ten miles. I knew from the start it would be a huge challenge to get myself to run the race at an 8:00 min/mi pace, so that was what I worked toward. There were many days when I didn't feel like going out and running hill sprints or going to run 8 miles (especially since this was my first experience running in the cold with my injury in late 2020), but I stayed true to my training and it certainly paid off. The 2022 Tar Heel 10 Miler was one of the best experiences I have had in college, and I truly consider it maybe my proudest accomplishment in my life. I did have a minor setback in the two weeks before the race, where I unluckily developed a bacterial skin infection in my left ankle which made it painful to put weight on my foot and caused me to miss the final ten-ish days of my training. I was pretty concerned that this would jeopardize all the training I had done to that point. It finally cleared up enough by race day, but I happened to wake up on the morning of the race with some left Achilles pain that I had never experienced before. I wasn't going to let some pain keep me from pursuing what I had been working toward, so I took some painkillers and got ready to run.
 
-The race was tough. I felt mostly okay from the start with a decent amount of energy and pep in my step, but my Achilles was quite uncomfortable. I made myself start slow knowing that I would have plenty of time to catch up later in the race if needed, but I ended up going far slower than I expected: my first-mile time was 8:21, 21 seconds slower than my intended pace for the full race. I was also a little taken aback because the 8:00 pacers were running well faster than an 8:00 pace for most of the race, which makes sense because of a big hill at the end of the race, but it was a surprise for me. I ended up making up for lost time over the next few miles and was at a sub-8 overall pace by the time I reached the halfway point. I was feeling pretty good, still pushing through the Achilles pain, but knowing that I had saved up enough energy to run the remaining five miles at my desired pace. Going into the ninth mile up Laurel Hill in Chapel Hill, also known as Heartbreak Hill, if I remember correctly my overall pace was 7:55 or 7:56 min/mi, so I felt confident in my ability to finish at an overall sub-8 pace. Heartbreak Hill was as tough as advertised, and was maybe more demoralizing than it was exhausting. I was thankful for all the hill sprints I had done for training because I stayed strong up the hill and passed a bunch of people on my way to the top. I finally finished the hill and entered the tenth and final mile at right around an 8:00 pace, feeling confident I could accomplish my goal. Sure enough, I was able to use the remainder of my energy to sprint it out for the last quarter mile or so and finished with a gun time of 1:19:57 and a chip time of 1:19:44. The relief of seeing all my hard work pay off was unlike any other feeling I’ve felt before, and it felt like a culmination of over two years of hard work.
+The race was tough. I felt mostly okay from the start with a decent amount of energy and pep in my step, but my Achilles was quite uncomfortable. I made myself start slow knowing that I would have plenty of time to catch up later in the race if needed, but I ended up going far slower than I expected: my first-mile time was 8:21, 21 seconds slower than my intended pace for the full race. I was also a little taken aback because the 8:00 pacers were running well faster than an 8:00 pace for most of the race, which makes sense because of a big hill at the end of the race, but it was a surprise for me. I ended up making up for lost time over the next few miles and was at a sub-8 overall pace by the time I reached the halfway point. I was feeling pretty good, still pushing through the Achilles pain, but knowing that I had saved up enough energy to run the remaining five miles at my desired pace. Going into the ninth mile up Laurel Hill in Chapel Hill, also known as Heartbreak Hill, if I remember correctly my overall pace was 7:55 or 7:56 min/mi, so I felt confident in my ability to finish at an overall sub-8 pace. Heartbreak Hill was as tough as advertised, and was maybe more demoralizing than it was exhausting. I was thankful for all the hill sprints I had done for training because I stayed strong up the hill and passed a bunch of people on my way to the top. I finally finished the hill and entered the tenth and final mile at right around an 8:00 pace, feeling confident I could accomplish my goal. Sure enough, I was able to use the remainder of my energy to sprint it out for the last quarter mile or so and finished with a gun time of 1:19:57 and a chip time of 1:19:44. The relief of seeing all my hard work pay off was unlike any other feeling I've felt before, and it felt like a culmination of over two years of hard work.
 
-I’ve been dealing with the Achilles problem in the two weeks following the race, but I’m not too concerned about it for now. I am going to rest up and make sure I stay healthy, and I can’t wait until I can get back out there and keep working on improving my strength and endurance. Next up, I want to run a half-marathon, this time with proper training. I do not know what my future with running will look like, but I am excited for whatever may come and I am so thankful I have the opportunity to wake up and run every day. I view myself completely differently having now transformed myself mentally and physically and am confident that I can handle any challenge life throws my way. The runner’s high is the most freeing emotion I have felt, and I am thankful for all the days to come when I will be blessed to experience it.
+I've been dealing with the Achilles problem in the two weeks following the race, but I'm not too concerned about it for now. I am going to rest up and make sure I stay healthy, and I can't wait until I can get back out there and keep working on improving my strength and endurance. Next up, I want to run a half-marathon, this time with proper training. I do not know what my future with running will look like, but I am excited for whatever may come and I am so thankful I have the opportunity to wake up and run every day. I view myself completely differently having now transformed myself mentally and physically and am confident that I can handle any challenge life throws my way. The runner's high is the most freeing emotion I have felt, and I am thankful for all the days to come when I will be blessed to experience it.
 
-In the words of Tony Soprano, “every day is a gift.”
+In the words of Tony Soprano, "every day is a gift."
 
-___
-
+------------------------------------------------------------------------
 
 ```{r creating_streak_variable}
 df$Streak = 1
@@ -213,8 +214,6 @@ for (i in 2:nrow(df)) {
 # suppressMessages(print(fig))
 ```
 
-
-
 ```{r}
 shoe.levels = c("PureBoost", "Ghost 13", "Clifton 8", "Ghost 14")
 
@@ -235,8 +234,6 @@ shoe.levels = c("PureBoost", "Ghost 13", "Clifton 8", "Ghost 14")
 #   theme(axis.text.y = element_blank(),
 #         plot.title = element_text(hjust = 0.5))
 ```
-
-
 
 ```{r}
 # fig = df |>
@@ -331,8 +328,6 @@ shoe.levels = c("PureBoost", "Ghost 13", "Clifton 8", "Ghost 14")
 #   arrange(pace)
 ```
 
-
-
 ```{r creating_day_before}
 df$RanDayBefore = "no"
 
@@ -395,54 +390,18 @@ time.seconds = floor((time.minutes - floor(time.minutes)) * 60)
 paste0("Ghost 14 time: ", hours.floored, "h ", min.floored, "m ", time.seconds, "s")
 ```
 
+```{r eval = F}
+df2 = df |>
+  filter(year(Date) == 2022) |>
+  select(Distance, Pace, Calories, Elevation)
 
+train = df2[1:119, ]
+test = df2[nrow(df2), ]
 
+mod = lm(Calories ~ ., data = train)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+round(predict(mod, test), 0)
+```
 
 
 
